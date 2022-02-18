@@ -1,0 +1,205 @@
+/* MASTER Table
+   CREATE TABLE subject(
+    subjectid INTEGER CONSTRAINT subject_pk PRIMARY KEY,
+    name VARCHAR2(20)
+   )
+
+    child TAble
+
+    CREATE TABLE Student(
+     roll INTEGER CONSTRAINT student_pk PRIMARY KEY,
+     name VARCHAR2(10), 
+     subjectid INTEGER CONSTRAINT subjectid_fk  REFERENCES subject(subjectid)
+    );  
+     
+
+*/
+
+  INSERT INTO subject VALUES(100,'Maths');
+  INSERT INTO subject VALUES(101,'English');
+  INSERT INTO subject VALUES(102,'Science');
+
+  INSERT INTO student VALUES(1,'Suresh',103)
+/* ORA-02291: integrity constraint (WAL352358.SUBJECTID_FK) violated - parent key not found*/
+// We are trying to insert a record in the child table and while inserting, we mentioned a
+  subject id which is not available in the parent table subject. So we get the error
+
+ INSERT INTO student VALUES(1,'Suresh',101)
+
+
+ DROP TABLE subject
+
+
+CREATE TABLE student(
+roll INTEGER,
+name VARCHAR2(10),
+marks NUMBER(5,2));
+
+INSERT INTO student VALUES(1,'Ram',98.05);
+INSERT INTO student VALUES(2,'Juben',80);
+
+How to check whether the table got created or not?
+
+  DESCRIBE student; 
+ 
+  SELECT * FROM student;
+
+---------------------------------------------------------------------------------------
+Not null==> null values are not allowed. When we define a primary key , primary key cannot 
+contain a null value. But rest of the columns can have null values until unless we explicitly
+mention the constraint for not null.
+
+
+ CREATE TABLE customerdetails(
+   custid VARCHAR2(5) CONSTRAINT customer_custid_pk PRIMARY KEY,
+   customername VARCHAR2(20),
+   address VARCHAR2(20)
+   );
+
+INSERT INTO customerdetails VALUES('C0001','Ram','a/22, Indira Nagar,Delhi');
+INSERT INTO customerdetails VALUES(null,'Ram','a/22, Indira Nagar,Delhi');
+// primary key cannot have null values
+INSERT INTO customerdetails VALUES('C0002',null,null);
+INSERT INTO customerdetails(custid,address) VALUES('C0003','22/6 Adarsh nagar');
+
+// Any other columns can have null values by default.
+
+
+ CREATE TABLE customerdetails(
+   custid VARCHAR2(5) CONSTRAINT customer_custid_pk PRIMARY KEY,
+   customername VARCHAR2(20) NOT NULL,
+   address VARCHAR2(20) NOT NULL
+   );
+
+
+INSERT into student VALUES(1001,'Alex',null);
+INSERT into student(studentid,name) VALUES (1001,'Alex');
+
+CREATE TABLE customerdetails(
+   custid VARCHAR2(5) CONSTRAINT customer_custid_pk PRIMARY KEY,
+   customername VARCHAR2(20) NOT NULL,
+   address VARCHAR2(20) DEFAULT 'Delhi'
+   );
+
+
+   Store the empid and courseid and the marks
+    empid   courseid marks
+    101     Java   90
+    102     Java   89
+    101     DBMS   70
+    102     DBMS   56
+    101     Java   56
+
+
+  CREATE TABLE result(
+   empid INTEGER,
+   courseid VARCHAR2(5),
+   marks NUMBER(5,2),
+   CONSTRAINT result_comp_pk PRIMARY KEY(empid,courseid)
+   );
+
+   -------------------------------------------------------------------
+* NOT NULL
+* PRIMARY KEY
+* FOREIGN KEY 
+* UNIQUE
+* CHECK CONSTRAINT
+
+   Constraint are called as column level and another is table
+level constraint
+
+  CREATE TABLE demo1 (
+   name VARCHAR2(20) NOT NULL
+  )
+ // NOT NULL is such a kind of constraint which are at the 
+column level only.
+
+  CREATE TABLE demo2 (
+   name VARCHAR2(20) CONSTRAINT demo2_name_not_null NOT NULL
+  );
+
+  CREATE TABLE demo3 (
+   id INTEGER PRIMARY KEY,
+   name VARCHAR2(20)
+   )
+
+   CREATE TABLE demo4 (
+   id INTEGER CONSTRAINT demo4_id_pk PRIMARY KEY,
+   name VARCHAR2(20)
+   );
+
+   CREATE TABLE demo5 (
+   id INTEGER,
+   name VARCHAR2(20),
+   CONSTRAINT demo5_id_pk PRIMARY KEY(id)
+   );
+
+ CREATE TABLE demo6 (
+   id INTEGER,
+   name VARCHAR2(20),
+   subject_id VARCHAR2(20) REFERENCES subject(subject_id),
+   CONSTRAINT demo5_id_pk PRIMARY KEY(id)
+   );
+
+ CREATE TABLE demo7 (
+   id INTEGER,
+   name VARCHAR2(20),
+   subject_id VARCHAR2(20) CONSTRAINT demo7_subject_id_fk 
+   REFERENCES subject(subject_id),
+   CONSTRAINT demo5_id_pk PRIMARY KEY(id)
+   );
+
+
+    CREATE TABLE demo7 (
+   id INTEGER,
+   name VARCHAR2(20),
+   subject_id VARCHAR2(20),
+   CONSTRAINT demo6_subject_id FOREIGN KEY(subject_id) REFERENCES subject(subject_id)
+   CONSTRAINT demo5_id_pk PRIMARY KEY(id)
+   );
+
+  
+
+
+   CREATE TABLE demo8 (
+   id INTEGER,
+   name VARCHAR2(20),
+   phone_number VARCHAR2(10) UNIQUE,
+   subject_id VARCHAR2(20),
+   CONSTRAINT demo6_subject_id FOREIGN KEY(subject_id) REFERENCES subject(subject_id)
+   CONSTRAINT demo5_id_pk PRIMARY KEY(id)
+   );
+
+
+   CREATE TABLE demo9 (
+   id INTEGER,
+   name VARCHAR2(20),
+   phone_number VARCHAR2(10) CONSTRAINT demo9_id UNIQUE,
+   subject_id VARCHAR2(20),
+   CONSTRAINT demo6_subject_id FOREIGN KEY(subject_id) REFERENCES subject(subject_id)
+   CONSTRAINT demo5_id_pk PRIMARY KEY(id)
+   );
+
+   CREATE TABLE demo10(
+     id INTEGER,
+     desig VARCHAR2(20) CHECK (desig in('Mgr','AsstMgr','Vp')),
+     dept VARCHAR2(20)
+    )
+
+  CREATE TABLE demo11(
+     id INTEGER,
+     desig VARCHAR2(20) CONSTRAINT demo11_id_check CHECK (desig in('Mgr','AsstMgr','Vp')),
+     dept VARCHAR2(20)
+    )
+
+ CREATE TABLE demo12(
+     id INTEGER,
+     desig VARCHAR2(20), 
+     dept VARCHAR2(20),
+     CONSTRAINT demo11_id_check CHECK (desig in('Mgr','AsstMgr','Vp'))
+    )
+
+
+
+
+
